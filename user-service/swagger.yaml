@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: User Service API
+  description: API documentation for user authentication and management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5001/api
+    description: Local server
+
+paths:
+  /auth/signup:
+    post:
+      summary: User Signup
+      description: Creates a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Aritra
+                lastName:
+                  type: string
+                  example: Bera
+                mobile:
+                  type: string
+                  example: 7003306313
+                email:
+                  type: string
+                  example: aritrabera67@gmail.com
+                password:
+                  type: string
+                  example: 123456
+                confirmPassword:
+                  type: string
+                  example: 123456
+                role:
+                  type: string
+                  enum: [user, admin]
+              required:
+                - firstName
+                - lastName
+                - email
+                - password
+                - confirmPassword
+                - role
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User Created successfully
+                  user:
+                    type: object
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /auth/login:
+    post:
+      summary: User Login
+      description: Logs in a user and returns a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: aritrabera67@gmail.com
+                password:
+                  type: string
+                  example: 123456
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+        "400":
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+  /users/{id}:
+    get:
+      summary: Get User By ID
+      description: Fetches a user by their ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the user to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: 675fbe358b6b62eaeab5984a
+                  firstName:
+                    type: string
+                    example: Aritra
+                  lastName:
+                    type: string
+                    example: Bera
+                  email:
+                    type: string
+                    example: aritrabera67@gmail.com
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
